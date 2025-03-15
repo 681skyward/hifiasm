@@ -228,8 +228,10 @@ void Print_H(hifiasm_opt_t* asm_opt)
     fprintf(stderr, "See `https://hifiasm.readthedocs.io/en/latest/' or `man ./hifiasm.1' for complete documentation.\n");
 }
 
+//asm_optの初期化
 void init_opt(hifiasm_opt_t* asm_opt)
 {
+	//メモリを設定する関数
 	memset(asm_opt, 0, sizeof(hifiasm_opt_t));
 	///asm_opt->flag = 0;
     asm_opt->flag = HA_F_PARTITION;
@@ -359,6 +361,7 @@ void init_opt(hifiasm_opt_t* asm_opt)
     asm_opt->chemical_flank = 256;
 }   
 
+//enzyme構造体のメモリを解放する関数
 void destory_enzyme(enzyme* f)
 {
     int i;
@@ -374,6 +377,7 @@ void destory_enzyme(enzyme* f)
     }
 }
 
+//メモリを解放する関数
 void destory_opt(hifiasm_opt_t* asm_opt)
 {
     if(asm_opt->read_file_names != NULL) free(asm_opt->read_file_names);
@@ -394,6 +398,7 @@ void ha_opt_reset_to_round(hifiasm_opt_t* asm_opt, int round)
 
 void ha_opt_update_cov(hifiasm_opt_t *opt, int hom_cov)
 {
+	//intにカッコをつけることで代入前にint型にキャストしている
 	int max_n_chain = (int)(hom_cov * opt->high_factor + .499);
 	opt->hom_cov = hom_cov;
 	if (opt->max_n_chain < max_n_chain)
