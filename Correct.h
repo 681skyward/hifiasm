@@ -123,6 +123,7 @@ typedef struct
 
 typedef struct
 {
+  //long longは64bit
   long long length;
   long long size;
   Cigar_record* buffer;
