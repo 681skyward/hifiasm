@@ -24,16 +24,20 @@
 #define SGAP 16
 #define MAX_LGAP(ql) ((((ql)*0.2)<256)?((ql)*0.2):256)
 
+// HA_MIN_OV_DIFFはオーバーラップ領域における最小のsequence divergence、既定値0.02 (CommandLines.h)
 #define WINDOW_MAX_SIZE (WINDOW + (int)(1.0 / HA_MIN_OV_DIFF) + 3) // TODO: why 1/max_ov_diff?
 
 ///#define FLAG_THRE 0
 
+//ヘッダファイル内で定義された関数
+//?,:は3項演算子で（条件式）?（真なら実行）:（偽なら実行）の構文
 #define MAX(x, y) (((x) >= (y))?(x):(y))
 #define MIN(x, y) (((x) <= (y))?(x):(y))
 #define DIFF(x, y) ((MAX((x), (y))) - (MIN((x), (y))))
 #define OVERLAP(x_start, x_end, y_start, y_end) (MIN(x_end, y_end) - MAX(x_start, y_start) + 1) 
 ///#define OVERLAP(x_start, x_end, y_start, y_end) MIN(x_end, y_end) - MAX(x_start, y_start) + 1 
 
+//定義：s_H[5] = [A,T,G,C,N] (Process_Read.cpp)
 #define Get_MisMatch_Base(RECORD) (s_H[(RECORD>>3)])
 #define Get_Match_Base(RECORD) (s_H[(RECORD&7)])
 #define Coverage_Threshold(coverage, r_len) (coverage*r_len*1.1)
@@ -107,6 +111,7 @@ typedef struct
     /**[2-31] bits are length**/
     char current_operation;
     int current_operation_length;
+    //uint32は符号なし32bit整数型
     uint32_t* record;
     uint64_t size;
     uint64_t length;
@@ -117,7 +122,7 @@ typedef struct
     uint64_t lost_base_size;
     uint64_t lost_base_length;
     
-
+//Assembly.cpp内で使われている
 }Cigar_record;
 
 
