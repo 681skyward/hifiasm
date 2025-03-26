@@ -826,6 +826,7 @@ int CommandLine_process(int argc, char *argv[], hifiasm_opt_t* asm_opt)
     int c;
 
     //long_optionsはオプション、コマンド、数字3桁コードの3要素で構成される配列(このファイル15行目)
+    //ketoptの戻り値は1文字のcharacter。戻り値がある限り繰り返し処理を行う
     while ((c = ketopt(&opt, argc, argv, 1, "hvt:o:k:w:m:n:r:a:b:z:x:y:p:c:d:M:P:if:D:FN:1:2:3:4:5:l:s:O:eu:", long_options)) >= 0) {
         if (c == 'h')
         {
