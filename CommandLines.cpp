@@ -819,10 +819,13 @@ int64_t inter_gsize(char *argv)
 
 int CommandLine_process(int argc, char *argv[], hifiasm_opt_t* asm_opt)
 {
+    //定義:KETOPT_INIT = { 1, 0, 0, -1, 1, 0, 0 } (ketopt.h)
+    //int ind, opt, char *arg, int longidx, i, pos, int_args の7要素
     ketopt_t opt = KETOPT_INIT;
 
     int c;
 
+    //long_optionsはオプション、コマンド、数字3桁コードの3要素で構成される配列(このファイル15行目)
     while ((c = ketopt(&opt, argc, argv, 1, "hvt:o:k:w:m:n:r:a:b:z:x:y:p:c:d:M:P:if:D:FN:1:2:3:4:5:l:s:O:eu:", long_options)) >= 0) {
         if (c == 'h')
         {
