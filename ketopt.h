@@ -44,7 +44,7 @@ static void ketopt_permute(char *argv[], int j, int n) /* move argv[j] over n el
  *
  * @param s         status; shall be initialized to KETOPT_INIT on the first call
  * @param argc      length of argv[]
- * @param argv      list of command-line arguments; argv[0] is ignored
+ * @param argv      list of command-line arguments; argv[0] is ignored ←argv[0]は常に"hifiasm"だから
  * @param permute   non-zero to move options ahead of non-option arguments
  * @param ostr      option string
  * @param longopts  long options
@@ -53,10 +53,17 @@ static void ketopt_permute(char *argv[], int j, int n) /* move argv[j] over n el
  *         argv[] is fully processed; '?' for an unknown option or an ambiguous
  *         long option; ':' if an option argument is missing
  */
+//CommandLine_processで使用 (CommandLines.cpp)
 static int ketopt(ketopt_t *s, int argc, char *argv[], int permute, const char *ostr, const ko_longopt_t *longopts)
 {
 	int opt = -1, i0, j;
+	
+	//permute=1なので必ず実行 (CommandLiens.cpp)
 	if (permute) {
+		//s={ 1, 0, 0, -1, 1, 0, 0 }
+		//int ind, opt, char *arg, int longidx, i, pos, n_args (CommandLines.cpp)
+		//オプションがある数だけ s->n_args をインクリメント
+		// \0はヌル文字
 		while (s->i < argc && (argv[s->i][0] != '-' || argv[s->i][1] == '\0'))
 			++s->i, ++s->n_args;
 	}
