@@ -36,7 +36,9 @@ char rc_Table[6] = {'T', 'G', 'C', 'A', 'N', 'N'};
 void init_All_reads(All_reads* r)
 {
 	memset(r, 0, sizeof(All_reads));
+	//定義：READ_INIT_NUMBER:1000(Process_Read.h)
 	r->index_size = READ_INIT_NUMBER;
+	//mallocの戻り値は確保したメモリーのポインタ
 	r->read_length = (uint64_t*)malloc(sizeof(uint64_t)*r->index_size);
 	r->name_index_size = READ_INIT_NUMBER;
 	r->name_index = (uint64_t*)malloc(sizeof(uint64_t)*r->name_index_size);
