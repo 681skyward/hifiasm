@@ -63,8 +63,11 @@ int main(int argc, char *argv[])
 	// ed_band_cal_global((char*)"ACTTTTTT", 8, (char*)"AATTTT", 6, 3),
 	// ed_band_cal_global_128bit((char*)"ACTTTTTT", 8, (char*)"AATTTT", 6, 3));
 	// exit(1);
+	
+	//asm_opt.sec_in, dbg_ovec_calは0
 	if(asm_opt.sec_in) ret = ha_assemble_pair();
 	else if(asm_opt.dbg_ovec_cal) ret = ha_ec_dbg();
+	//ha_assembleはAssembly.cpp内に記載
 	else ret = ha_assemble();
 	
     destory_opt(&asm_opt);
