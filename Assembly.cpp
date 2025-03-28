@@ -2059,14 +2059,17 @@ int ha_assemble(void)
     // quick_debug_phasing(MC_NAME);
 	extern void ha_extract_print_list(const All_reads *rs, int n_rounds, const char *o);
 	int r, hom_cov = -1, ovlp_loaded = 0; uint64_t tot_b, tot_e;
+	//非ゼロならif文が実行される
 	if (asm_opt.load_index_from_disk && load_all_data_from_disk(&R_INF.paf, &R_INF.reverse_paf, asm_opt.output_file_name)) {
 		ovlp_loaded = 1;
 		fprintf(stderr, "[M::%s::%.3f*%.2f] ==> loaded corrected reads and overlaps from disk\n", __func__, yak_realtime(), yak_cpu_usage());
 		if (asm_opt.extract_list) {
 			ha_extract_print_list(&R_INF, asm_opt.extract_iter, asm_opt.extract_list);
+			//exit(0)はプログラムの正常終了
 			exit(0);
 		}
 		if (asm_opt.flag & HA_F_WRITE_EC) {
+	    //is_scの初期値は0、ただしketoptでc=359なら1
             if(asm_opt.is_sc) Output_corrected_fastq();
             else Output_corrected_reads();
         }
