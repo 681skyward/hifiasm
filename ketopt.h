@@ -56,6 +56,7 @@ static void ketopt_permute(char *argv[], int j, int n) /* move argv[j] over n el
 //CommandLine_processで使用 (CommandLines.cpp)
 static int ketopt(ketopt_t *s, int argc, char *argv[], int permute, const char *ostr, const ko_longopt_t *longopts)
 {
+	//戻り値のoptはグローバル変数でない
 	int opt = -1, i0, j;
 	
 	//permute=1なので必ず実行 (CommandLiens.cpp)
@@ -81,16 +82,25 @@ static int ketopt(ketopt_t *s, int argc, char *argv[], int permute, const char *
 		s->opt = 0, opt = '?', s->pos = -1;
 		if (longopts) { /* parse long options */
 			int k, n_exact = 0, n_partial = 0;
+			//ko_longopt_tはconst char *name, int has_arg, val
 			const ko_longopt_t *o = 0, *o_exact = 0, *o_partial = 0;
 			for (j = 2; argv[s->i][j] != '\0' && argv[s->i][j] != '='; ++j) {} /* find the end of the option name */
 			for (k = 0; longopts[k].name != 0; ++k)
+				//strncmpは2つの文字列に対して最初のj-2文字を比較し、一致していれば0を返す関数（string.h）
+				//コマンドラインのオプションとlongopts[k].nameが一致していれば &longopts[k] を代入
+				//longopt = {"ont",       ko_no_argument, 359} なら longopt->val==359
 				if (strncmp(&argv[s->i][2], longopts[k].name, j - 2) == 0) {
 					if (longopts[k].name[j - 2] == 0) ++n_exact, o_exact = &longopts[k];
 					else ++n_partial, o_partial = &longopts[k];
 				}
 			if (n_exact > 1 || (n_exact == 0 && n_partial > 1)) return '?';
+			//?,:で三項演算子　条件式?真なら実行:偽なら実行
+			//n_exact==1 なら o=o_exact
+			//n_partial==1 なら o=o_partial でなければ o=0
 			o = n_exact == 1? o_exact : n_partial == 1? o_partial : 0;
+			//oが非ゼロなら
 			if (o) {
+				//戻り値optへの代入
 				s->opt = opt = o->val, s->longidx = o - longopts;
 				if (argv[s->i][j] == '=') s->arg = &argv[s->i][j + 1];
 				if (o->has_arg == 1 && argv[s->i][j] == '\0') {
@@ -103,6 +113,7 @@ static int ketopt(ketopt_t *s, int argc, char *argv[], int permute, const char *
 		const char *p;
 		if (s->pos == 0) s->pos = 1;
 		opt = s->opt = argv[s->i][s->pos++];
+		//strchrは文字列ostrにおいてcharacter opt が最初に出現する位置のポインタを返す関数（string.h）
 		p = strchr((char*)ostr, opt);
 		if (p == 0) {
 			opt = '?'; /* unknown option */
@@ -121,6 +132,7 @@ static int ketopt(ketopt_t *s, int argc, char *argv[], int permute, const char *
 				ketopt_permute(argv, j, s->n_args);
 	}
 	s->ind = s->i - s->n_args;
+	//opt==359 なのは long_optionsが "ont"　のとき
 	return opt;
 }
 
