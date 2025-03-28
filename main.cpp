@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
     //asm_optはhifiasm_opt_tクラス(Commandlines.h)
     //init_optは変数の初期値の代入(Commandlines.cpp)
     init_opt(&asm_opt);
+    //コマンドラインのオプションに応じてasm_optインスタンスに変数を格納する
     if (!CommandLine_process(argc, argv, &asm_opt)) return 0;
 	
 	// bit_extz_t exz, exz64; init_bit_extz_t(&exz, 2); init_bit_extz_t(&exz64, 2);
@@ -64,7 +65,7 @@ int main(int argc, char *argv[])
 	// ed_band_cal_global_128bit((char*)"ACTTTTTT", 8, (char*)"AATTTT", 6, 3));
 	// exit(1);
 	
-	//asm_opt.sec_in, dbg_ovec_calは0
+	//初期値ではasm_opt.sec_in=NULL, dbg_ovec_cal=0
 	if(asm_opt.sec_in) ret = ha_assemble_pair();
 	else if(asm_opt.dbg_ovec_cal) ret = ha_ec_dbg();
 	//ha_assembleはAssembly.cpp内に記載
